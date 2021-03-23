@@ -1,113 +1,81 @@
+# Attending a Doctor's Appointment...or Not.
 
-# Phase 3 Project
+![image.png](images/Doctor-talking-with-patient-1080x675.jpeg)
 
-Congratulations! You've made it through another _intense_ module, and now you're ready to show off your newfound Machine Learning skills!
+Author: James Stipanowich
 
-![awesome](https://raw.githubusercontent.com/learn-co-curriculum/dsc-phase-3-project/main/images/smart.gif)
-
-All that remains in Phase 3 is to put your new skills to use with another large project! This project should take 20 to 30 hours to complete.
 
 ## Project Overview
 
-For this project, you will engage in the full data science process from start to finish, solving a classification problem using a dataset of your choice.
+A doctor waits...and waits...AND waits...Where is the patient? Where are MULTIPLE patients? In every doctor's office around the globe there are instances when people miss doctor appointments. What is the reason? Does it have to do with the doctor's behavior? Is something wrong with the patient? Is a specific kind of person constantly missing their designated appointments? Is some event occurring to illicit an absence from a doctor's office? These are all questions to explore in determining why patients are missing at scheduled doctor appointments.
+
+
+## Business Problem
+
+In this project, I am acting with a doctor's office in a Brazilian neighborhood. The doctor's office expresses concern that patients are not showing up for their doctor appointments. I plan to help the doctor's office determine what factors caused patients to avoid scheduled doctor appointments and what types of patients are most likely to skip their scheduled doctor appointment.
 
 ### The Data
 
-You have the option to either **choose a dataset from a curated list** or **choose your own dataset _not on the list_**. The goal is to choose a dataset appropriate to the type of business problem and/or classification methods that most interests you. It is up to you to define a stakeholder and business problem appropriate to the dataset you choose. If you are feeling overwhelmed or behind, we recommend you choose dataset #2 or #3 from the curated list.
+This project uses data from a Kaggle dataset about medical appointment "no-shows". The Medical Appointment No-Shows dataset can be found at https://www.kaggle.com/joniarroba/noshowappointments. The dataset covers the attendance records for doctor appointmnets in 81 neighborhoods in Brazil. There are 110527 rows of appointments in the dataset.
 
-If you choose a dataset from the curated list, **inform your instructor which dataset you chose** and jump right into the project. If you choose your own dataset, **run the dataset and business problem by your instructor for approval** before starting your project.
+I decided what data columns from this dataset to use and how to use them. 
 
-### Curated List of Datasets
+## Data Preparation
 
-You may select any of the four datasets below - we provide brief descriptions of each. Follow the links to learn more about the dataset and business problems before making a final decision.
+The classifier being predicted is whether a patient attended (0) or did not show up (1) for their doctor appointment. The records of each appointment scenario I graphed as follows with 88208 attended appointments and 22319 "no-show" appointments with the doctor's office:
 
-#### 1) [Chicago Car Crashes](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Crashes/85ca-t3if)
-Note this links also to [Vehicle Data](https://data.cityofchicago.org/Transportation/Traffic-Crashes-Vehicles/68nd-jvt3) and to [Driver/Passenger Data](https://data.cityofchicago.org/Transportation/Traffic-Crashes-People/u6pd-qa9d).
+![image.png](images/countplot.png)
 
-Build a classifier to predict the primary contributory cause of a car accident, given information about the car, the people in the car, the road conditions etc. You might imagine your audience as a Vehicle Safety Board who's interested in reducing traffic accidents, or as the City of Chicago who's interested in becoming aware of any interesting patterns. Note that there is a **multi-class** classification problem. You will almost certainly want to bin or trim or otherwise limit the number of target categories on which you ultimately predict. Note e.g. that some primary contributory causes have very few samples.
+I observed that about 80 percent of the appointments were attended and 20 percent of the appointments were "no-shows". 
 
-#### 2) [Terry Traffic Stops](https://catalog.data.gov/dataset/terry-stops)
-In [*Terry v. Ohio*](https://www.oyez.org/cases/1967/67), a landmark Supreme Court case in 1967-8, the court found that a police officer was not in violation of the "unreasonable search and seizure" clause of the Fourth Amendment, even though he stopped and frisked a couple of suspects only because their behavior was suspicious. Thus was born the notion of "reasonable suspicion", according to which an agent of the police may e.g. temporarily detain a person, even in the absence of clearer evidence that would be required for full-blown arrests etc. Terry Stops are stops made of suspicious drivers.
+I changed the "AppointmentDay" column to represent the day of the week for each appointment and added those values to a column with the title "DayoftheWeek". Also, I subtracted the "AppointmentDay" column from the "ScheduledDay" column and added a column titled "DayDifference" to represent how many days out the appointment was scheduled from the actual day the appointment was set to take place.
 
-Build a classifier to predict whether an arrest was made after a Terry Stop, given information about the presence of weapons, the time of day of the call, etc. Note that this is a **binary** classification problem.
+I created a new dataframe to contain all the columns I used in my analyses and looked at the data types of each column. Also, I grouped all of my analysis columns by the "No-show" column. I determined the average age for a "no-show" is 34.3 years old and the average number of days away from an appointment for a "no-show" to occur on the appointment day is 15.8 days.
 
-Note that this dataset also includes information about gender and race. You **may** use this data as well. You may, e.g. pitch your project as an inquiry into whether race (of officer or of subject) plays a role in whether or not an arrest is made.
+I prepared my new dataframe for a train-test split and data modeling procedures.
 
-If you **do** elect to make use of race or gender data, be aware that this can make your project a highly sensitive one; your discretion will be important, as well as your transparency about how you use the data and the ethical issues surrounding it.
+## Data Modeling
 
-#### 3) [SyriaTel Customer Churn](https://www.kaggle.com/becksddf/churn-in-telecoms-dataset)
+After trying different models including logistic regression and k nearest neighbors, I chose to stick with a tree based model instead of some other model type. My focus was on getting an accurate model that had a lot of interaction terms. A tree based model seemed best for my evaluations.
 
-Build a classifier to predict whether a customer will ("soon") stop doing business with SyriaTel, a telecommunications company. Note that this is a **binary** classification problem.
+I started off with a first decision tree classifier model that was very overfit. I decided to use this model to look at possible parameters for a parameter grid and produce another tree model to help improve the initial model's performance. I created graphs of max tree depth, minimum samples splits, and minimum samples for a leaf for my next tree model.
 
-Most naturally, your audience here would be the telecom business itself, interested in losing money on customers who don't stick around very long. Are there any predictable patterns here?
+I instantiated a new tree-based model. However, that did not do well with the parameters I put into it. I put that model into random forest and grid search models to help prune my tree models further and come up with best parameters for my final tree-based model that used GridSearchCV.
 
-#### 4) [Tanzanian Water Well Data](https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/page/23/)
-This dataset is part of an *active competition* until April 31, 2021!
+My final model had very close accuracy scores for training and test data of both around 0.57 with the slightest bit of underfitting. The final model had an AUC of 0.7, which compares the false positive and true positive rates effectively. My f1 score was best for my final model. I wanted to get fairly balanced precision and recall scores for my model. However, the high recall score result is not as much of a concern. I would rather believe someone was not going to show up for an appointment and have them show up with a false positive than believe a person was going to show up for an appointment and have them be a "no-show" with a false negative. The high recall score helps represent a minimization of false negatives.
 
-Tanzania, as a developing country, struggles with providing clean water to its population of over 57,000,000. There are many waterpoints already established in the country, but some are in need of repair while others have failed altogether.
+I chose to look at the feature importances for my final tree-based model. Age, SMS_received, and DayDifference seemed to be the columns most influential in the results of the data. I decided to include permutation importance because feature importance does not reshuffle the features to create more balanced results. The directions of the feature importance is not obvious by itself. Permutation importance allows for preserving the distribution of the variable of each predictor that influences model performance. The Age, SMS_received, and DayDifference columns still seemed to be the columns that hold the most weight when analyzing the data.
 
-Build a classifier to predict the condition of a water well, using information about the sort of pump, when it was installed, etc. Note that this is a **ternary** classification problem.
+## Conclusions
 
-### Sourcing Your Own Data
+- Age should be included in future analyses. The Age column seemed to exhibit high logistic regression importance, random forest feature importance, and permutation importance as well. The average age of a "no-show" was lower than the average age of a person who attended an appointment.  Older people appear to attend appointments more often than younger people on average.
 
-Sourcing new data is a valuable skill for data scientists, but it requires a great deal of care. An inappropriate dataset or an unclear business problem can lead you spend a lot of time on a project that delivers underwhelming results. The guidelines below will help you complete a project that demonstrates your ability to engage in the full data science process.
+- Book less appointments farther out from the actual appointment day. The average number of days 
+away from an appointment for a "no-show" was higher than the average number of days away from an appointment of someone who attended their appointment. Also, the DayDifference column seemed to have high logistic regression importance, random forest feature importance, and permutation importance.
 
-Your dataset must be...
+- Remind people more frequently of their appointment whether by phone or text. The DayDifference columns and SMS_received columns showed strong relationships with "no-shows". The DayDifference column and SMS _received columns seemed to have high logistic regression importance, random forest feature importance, and permutation importance. Appointment reminders could help decrease the number of "no-show" appointments and increase memory of an appointment before an appointment. 
 
-1. **Appropriate for classification.** It should have a categorical outcome or the data needed to engineer one.   
 
-2. **Usable to solve a specific business problem.** This solution must rely on your classification model.
+## Recommendations for Further Analysis
 
-3. **Somewhat complex.** It should contain a minimum of 1000 rows and 10 features.
+- Consider gender in future analyses. Gender had slight logistic regression importance, random forest feature importance, and permutation importance.
 
-4. **Unfamiliar.** It can't be one we've already worked with during the course or that is commonly used for demonstration purposes (e.g. MNIST).
+- Procure a "no-show" analysis based on neighborhood. Some neighborhoods may have stronger correlations with "no-shows" than others.
 
-5. **Manageable.** Stick to datasets that you can model using the techniques introduced in Phase 3.
+## For More Information
 
-Once you've sourced your own dataset and identified the business problem you want to solve with it, you must to **run them by your instructor for approval**.
+See the full analysis of my findings in DoctorsAppointment.ipynb
 
-#### Problem First, or Data First?
+Contact me at jmstipanowich@gmail.com
 
-There are two ways that you can source your own dataset: **_Problem First_** or **_Data First_**. The less time you have to complete the project, the more strongly we recommend a Data First approach to this project.
+## Repository Structure
 
-**_Problem First_**: Start with a problem that you are interested in that you could potentially solve with a classification model. Then look for data that you could use to solve that problem. This approach is high-risk, high-reward: Very rewarding if you are able to solve a problem you are invested in, but frustrating if you end up sinking lots of time in without finding appropriate data. To mitigate the risk, set a firm limit for the amount of time you will allow yourself to look for data before moving on to the Data First approach.
+├── images
 
-**_Data First_**: Take a look at some of the most popular internet repositories of cool data sets we've listed below. If you find a data set that's particularly interesting for you, then it's totally okay to build your problem around that data set.
+├── DoctorsAppointment.ipynb
 
-There are plenty of amazing places that you can get your data from. We recommend you start looking at data sets in some of these resources first:
+├── KingCountyHousingPowerpoint.pdf
 
-* [UCI Machine Learning Datasets Repository](https://archive.ics.uci.edu/ml/datasets.php)
-* [Kaggle Datasets](https://www.kaggle.com/datasets)
-* [Awesome Datasets Repo on Github](https://github.com/awesomedata/awesome-public-datasets)
-* [New York City Open Data Portal](https://opendata.cityofnewyork.us/)
-* [Inside AirBNB](http://insideairbnb.com/)
+├── README.md
 
-## The Deliverables
-
-There are three deliverables for this project:
-
-* A **GitHub repository**
-* A **Jupyter Notebook**
-* A **non-technical presentation**
-
-Review the "Project Submission & Review" page in the "Milestones Instructions" topic for instructions on creating and submitting your deliverables. Refer to the rubric associated with this assignment for specifications describing high-quality deliverables.
-
-### Key Points
-
-* **Your deliverables should explicitly address each step of the data science process.** Refer to [the Data Science Process lesson](https://github.com/learn-co-curriculum/dsc-data-science-processes) from Topic 19 for more information about process models you can use.
-
-* **Your Jupyter Notebook should demonstrate an iterative approach to modeling.** This means that you begin with a basic model, evaluate it, and then provide justification for and proceed to a new model. We encourage you to try a bunch of different models: logistic regression, decision trees, or anything else you think would be appropriate.
-
-* **You must choose appropriate classification metrics and use them to evaluate your models.** Choosing the right classification metrics is a key data science skill, and should be informed by data exploration and the business problem itself. You must then use this metric to evaluate your model performance using both training and testing data.
-
-## Getting Started
-
-Create a new repository for your project to get started. We recommend structuring your project repository similar to the structure in [the Phase 1 Project Template](https://github.com/learn-co-curriculum/dsc-project-template). You can do this either by creating a new fork of that repository to work in or by building a new repository from scratch that mimics that structure.
-
-## Project Submission and Review
-
-Review the "Project Submission & Review" page in the "Milestones Instructions" topic to learn how to submit your project and how it will be reviewed. Your project must pass review for you to progress to the next Phase.
-
-## Summary
-
-This project is an opportunity to expand your data science toolkit by evaluating, choosing, and working with new datasets. Spending time up front making sure you have a good dataset for a solvable problem will help avoid the major problems that can sometimes derail data science projects. You've got this!
+├── student.ipynb
