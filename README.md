@@ -16,7 +16,7 @@ In this project, I am acting with a doctor's office in a Brazilian neighborhood.
 
 ## The Data
 
-This project uses data from a Kaggle dataset about medical appointment "no-shows". The Medical Appointment No-Shows dataset can be found at https://www.kaggle.com/joniarroba/noshowappointments. The dataset covers the attendance records for doctor appointmnets in 81 neighborhoods in Brazil. There are 110527 rows of appointments in the dataset.
+This project uses data from a Kaggle dataset about medical appointment "no-shows". The Medical Appointment No-Shows dataset can be found at https://www.kaggle.com/joniarroba/noshowappointments. The dataset covers the attendance records for doctor appointments in 81 neighborhoods in Brazil. There are 110527 rows of appointments in the dataset.
 
 I decided what data columns from this dataset to use and how to use them. 
 
