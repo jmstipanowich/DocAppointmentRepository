@@ -55,12 +55,13 @@ away from an appointment for a "no-show" was higher than the average number of d
 
 - Remind people more frequently of their appointment whether by phone or text. The DayDifference columns and SMS_received columns showed strong relationships with "no-shows". The DayDifference column and SMS _received columns had high logistic regression importance, random forest feature importance, and permutation importance. Appointment reminders could help decrease the number of "no-show" appointments and increase memory potential of a scheduled appointment before the appointment takes place. 
 
-
 ## Recommendations for Further Analysis
 
 - Consider gender more in future analyses. Gender had slight logistic regression importance, random forest feature importance, and permutation importance.
 
 - Procure a "no-show" analysis based on neighborhood. Some neighborhoods may have stronger correlations with "no-shows" than others.
+
+- Locate and utilize data on what kind of medicine each doctor's office specializes in. A doctor's office specialization could provide interesting information and possible trends for no-show appointments.
 
 ## For More Information
 
