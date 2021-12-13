@@ -30,7 +30,7 @@ I observed that about 80 percent of the appointments were attended and 20 percen
 
 I changed the "AppointmentDay" column to represent the day of the week for each appointment and added those values to a column with the title "DayoftheWeek". Also, I subtracted the "AppointmentDay" column from the "ScheduledDay" column and added a column titled "DayDifference" to represent how many days out the appointment was scheduled from the actual day the appointment was set to take place.
 
-I created a new dataframe to contain all the columns I used in my analyses and looked at the data types of each column. Also, I grouped all of my analysis columns by the "No-show" column. I determined the average age for a "no-show" is 34.3 years old and the average number of days away from an appointment for a "no-show" to occur on the appointment day is 15.8 days.
+I created a new dataframe to contain all the columns applicable to my analyses. I grouped all of my analysis columns by the "No-show" column. I determined the average age for a "no-show" is 34.3 years old and the average number of days away from an appointment for a "no-show" to occur on the appointment day is 15.8 days.
 
 I prepared my new dataframe for a train-test split and data modeling procedures.
 
